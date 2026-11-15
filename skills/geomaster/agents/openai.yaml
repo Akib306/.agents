@@ -1,0 +1,4 @@
+interface:
+  display_name: "GeoMaster"
+  short_description: "Geospatial, remote sensing, and spatial ML workflows"
+  default_prompt: "Use $geomaster for this geospatial or remote-sensing task, checking data provenance, coordinate systems, and evaluation limits."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Transformers"
+  short_description: "Hugging Face models, inference, and fine-tuning"
+  default_prompt: "Use $transformers for this model task, checking the installed version and reusing authorized access only when the chosen model needs it."

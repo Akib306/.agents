@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scikit-learn"
+  short_description: "Classical ML pipelines and defensible evaluation"
+  default_prompt: "Use $scikit-learn for this machine-learning task, preserving train/test separation and checking the active library version."
