@@ -9,7 +9,13 @@ Help readers assess an engineering decision. Ground the document in the supplied
 - **Technical specification:** Define observable behavior, contracts, constraints, and acceptance criteria precisely enough to implement or verify.
 - **Overview:** Explain the existing system. Use the explanation guidance when no decision is being proposed.
 
-Follow the project's template when one exists. Add only sections that help evaluate this change; a small decision may need a few paragraphs. The existing `documentation-and-adrs` skill can supply project documentation conventions when that separate work is needed; it is not a prerequisite for editing prose.
+Follow the project's template when one exists. Add only sections that help evaluate this change; a small decision may need a few paragraphs.
+
+## ADR conventions and history
+
+Before creating an ADR, inspect existing records, project instructions, and configuration such as `.adr-dir`. Match the established location, markup, filename and numbering scheme, and section headings. If those sources conflict, flag the conflict rather than introducing a second convention. If no convention exists, choose a simple location and naming scheme appropriate to the project.
+
+Preserve historical ADRs. When a decision changes, write a new record that links to and supersedes the old one rather than deleting the rationale. Keep proposed, accepted, superseded, and deprecated statuses distinct; a prose edit does not authorize accepting a decision.
 
 ## Make the decision reviewable
 

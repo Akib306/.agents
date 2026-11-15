@@ -12,11 +12,13 @@ The three upstream MIT notices are retained in [source-licenses.txt](source-lice
 
 ## Selective K-Dense installation
 
-Only these implementation skills accompany the writing skill:
+These independent implementation skills accompany the writing skill:
 
 - `geomaster`: GIS, raster and vector workflows, remote sensing, spatial evaluation, and Earth-observation ML. Its GeoPandas coverage avoids installing a second overlapping GIS skill.
 - `scikit-learn`: classical ML, preprocessing pipelines, model selection, and evaluation.
 - `transformers`: Hugging Face model loading, tokenization, inference, and fine-tuning for text, vision, and multimodal work.
+
+They remain sibling skills because they perform GIS and ML work independently of writing. Writing-specific domain guidance lives inside this skill in [geospatial and ML reporting](geospatial-and-ml.md); a writing request does not need to load the implementation skills.
 
 Their supporting references remain local and load only when needed. Local provenance records identify source revisions and adaptations. No Python environment, library dependency, model weight, dataset, service account, or plugin was installed as part of this collection. Medical and biomedical skills were excluded. Other CS libraries were left out unless needed for a specific task; domain relevance alone is not a reason to install every package skill.
 
@@ -34,4 +36,4 @@ An independent forward test exercised a research abstract, draft software RFC, h
 
 The [skills.sh directory](https://skills.sh/) and its technical-writing search were checked on 2026-11-15. [Anthropic's doc-coauthoring](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) was also read. The directory reported approximately 102,000 installations at inspection; this is a popularity signal, not a quality guarantee. Its audience framing and reader-testing idea are useful, but installing another broad writing workflow would duplicate this skill and add frequent interviews and confirmation steps. It was not installed.
 
-The existing local `documentation-and-adrs` skill already supports repository documentation and ADR conventions. It was inspected for overlap and left unchanged. The new writing skill supplies research and audience-specific prose guidance without replacing those project conventions.
+At the user's request, the overlapping `documentation-and-adrs` skill was removed. Its useful ADR convention and history guidance was consolidated into [software design](software-design.md), so design documents and ADRs have one writing entrypoint without a second generic documentation workflow.
