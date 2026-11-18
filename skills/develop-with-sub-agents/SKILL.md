@@ -5,7 +5,9 @@ description: Plan, delegate, and verify coding work using subagents in Codex, Gi
 
 # Develop with Sub-Agents
 
-The main agent owns the plan, worker selection, integration, verification, and final acceptance. Implementation workers own scoped tickets and run targeted checks. The main agent can review directly or use a separate reviewer where independent review is needed.
+The **main agent** is the agent the user interacts with directly. It uses the model and reasoning effort configured for the user's conversation. It owns the plan, worker selection, integration, verification, final acceptance, and communication with the user.
+
+Implementation subagents own scoped tickets and run targeted checks. The main agent can review directly or delegate to a separate reviewer where independent review is needed.
 
 ## Choose a delegation route
 
@@ -30,7 +32,9 @@ Give workers only the information and permissions needed for the ticket. Keep se
 4. If the runtime requires a fresh worker for a round, keep the approved model and effort where suitable and send a compact handoff with the current patch, prior findings and decisions, and remaining checks.
 5. After the final delegated recheck, the main agent may resolve a localized issue inline and verify the fix. Report any unresolved issue and its impact.
 
-## Frozen OpenAI routing
+## Frozen OpenAI subagent routing
+
+Use this roster to select models and reasoning effort for delegated subagents.
 
 Updated 2026-11-17 from the supplied screenshots of Intelligence Index v5.0.1 and Cost per Intelligence Index Task. Refresh only at the user's request. [Artificial Analysis](https://artificialanalysis.ai/)
 
