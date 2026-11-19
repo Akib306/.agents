@@ -2,7 +2,7 @@
 
 Worked fixes for the anti-patterns named in Step 3 of the `performance-optimization` skill. The skill states the rule and the signature to look for; this file shows one concrete implementation. Open the section you need after Step 2 has identified the bottleneck — it is not meant to be read top to bottom.
 
-Checklists, measurement commands, TTFB diagnosis, and caching read/write strategies live in `../../../references/performance-checklist.md`.
+Use the pattern that matches the observed bottleneck. Compare measurements under the same conditions and apply the project's targets.
 
 ## N+1 Queries (Backend)
 
@@ -247,4 +247,10 @@ res.set('Cache-Control', 'public, max-age=300'); // 5 minutes
 
 **Guard against the stampede.** A hot key expires, every concurrent request misses together, and the origin takes the full load at once, which is how a cache turns into an outage instead of preventing one. Serve stale while a single request recomputes (`stale-while-revalidate`), or coalesce concurrent misses behind one in-flight promise so N waiters cause one recompute.
 
-**Do not cache:** anything whose staleness is a correctness bug (balances, permissions, inventory at checkout), or per-user data under a key that does not identify the user. See `../../../references/performance-checklist.md#caching-strategies` for request coalescing, write strategies, negative caching, and the cache checklist.
+**Do not cache:** anything whose staleness is a correctness bug (balances, permissions, inventory at checkout), or per-user data under a key that does not identify the user.
+
+## Browser metrics and budgets
+
+For public web pages, the Core Web Vitals reference thresholds are LCP at most 2.5 s, INP at most 200 ms, and CLS at most 0.1 at the 75th percentile of visits. Use the project's own field measures and budgets to judge changes. Synthetic traces help isolate regressions. Inspect the network waterfall for a slow initial response and profile the server when time is spent waiting on it.
+
+Set bundle, image, and request budgets from the target device and network. As an example, an interactive page might budget 200 kB gzip for initial JavaScript if its baseline, required features, and device targets justify that value. Use existing CI tooling for repeatable measurements. Field data complements the synthetic check when it is available.

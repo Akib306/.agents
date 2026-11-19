@@ -10,7 +10,7 @@ order, normalization, labels and spatial/temporal split definitions.
 
 ### Random Forest for land cover
 
-Use the bundled `classify_imagery` helper (see the main skill) for a small masked
+Use the bundled `classify_imagery` helper ([local raster recipes](code-examples.md#local-raster-recipes)) for a small masked
 raster fit/predict exercise. Rasterize labels in the raster CRS using its actual
 transform. Exclude nodata from both fitting and prediction, reserve an output nodata
 code and verify integer class range before casting.

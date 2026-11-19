@@ -51,3 +51,29 @@ absent optional Stone Soup smoother; the tested MovingPandas operations do not u
 The core environment intentionally excludes heavy GPU/desktop/specialist stacks.
 A package being importable or a synthetic check passing does not validate real-world
 scientific accuracy, field transfer, calibration or service availability.
+
+
+## Tested scope and installation
+
+The verification notes below are retained from upstream, not a new local test run.
+Check the active environment before relying on its version-specific examples.
+
+The local recipe suite targets GeoPandas 1.2.0, Rasterio 1.5.2, Shapely 2.1.2,
+PyProj 3.8.0, Rioxarray 0.23.0, Xarray 2026.9.0, OSMnx 2.1.1 and
+PySTAC Client 0.9.0. See [evidence boundaries](#evidence-boundaries) for
+execution limits. Examples requiring actual input files are templates; authenticated
+Earth Engine/CDS/commercial services, desktop GIS and GPU training remain illustrative.
+
+```bash
+# In a dedicated environment; install only the workflow's optional dependencies.
+uv venv --python 3.13
+uv pip install geopandas==1.2.0 rasterio==1.5.2 shapely==2.1.2 pyproj==3.8.0
+uv pip install rioxarray==0.23.0 xarray==2026.9.0 'dask[array]' scikit-learn==1.9.1
+uv pip install pystac-client==0.9.0 planetary-computer==1.0.0 odc-stac
+# For osgeo/native CLI or PDAL, use a separate conda-forge environment:
+# conda create -n geo-native -c conda-forge python=3.13 gdal pdal python-pdal
+```
+
+Install TorchGeo/PyTorch, RSGISLib, Py6S/6S, ArcPy, QGIS or other specialist
+runtimes separately when required. A Rasterio wheel includes its own GDAL library;
+it does not install `osgeo` or the GDAL command-line programs.

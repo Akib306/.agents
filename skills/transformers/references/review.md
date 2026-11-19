@@ -34,3 +34,26 @@ The [v5 migration guide](https://github.com/huggingface/transformers/blob/v5.18.
 Twenty-five released source files match the installed wheel byte-for-byte. All 169 Python fences parse; 57 public API objects/signatures were resolved. These are separate checks: parsing/signatures do not execute a placeholder example or prove model/backend compatibility. The tests use synthetic data and random weights, and training runs only a few steps. They do not establish convergence, calibration, factuality, scientific validity, or pretrained performance.
 
 The skill has no custom REST inference service. Its external operations are the Hub SDK's model/dataset reads and optional uploads; those remain illustrative. Public single-record metadata/config probes do not test gated access, rate limits, Xet/LFS weight transfer, dataset streaming, or pagination. CUDA/ROCm/XPU/Gaudi/MPS, OCR, real speech files, VLM/detection/segmentation pretrained inference, multi-device dispatch, custom Hub generation, ONNX export, DeepSpeed, Optuna search, and external trackers were not executed. SHAP wrapper compatibility remains outside this suite and must be checked against actual model outputs.
+
+
+## Installation
+
+Targets **Transformers 5.18.0**, verified against its released source on 2026-10-01. Native CPU checks use Python 3.11, Torch 2.14.1, Datasets 5.0.1, Accelerate 1.15.0, PEFT 0.21.2, and Hub 1.33.0. The Torch extra requires Torch >=2.5. Install in a dedicated environment:
+
+```bash
+uv venv --python 3.11 .venv-transformers
+uv pip install --python .venv-transformers/bin/python "transformers[torch]==5.18.0" "torch==2.14.1" "huggingface-hub==1.33.0" "datasets==5.0.1" "accelerate==1.15.0" "peft==0.21.2"
+```
+
+Use `.venv-transformers/Scripts/python.exe` on Windows. Select an appropriate Torch build for the target hardware before installation. Hub 2.1.1 is newer, but Datasets 5.0.1 requires Hub <2; upgrading every package independently makes this training stack unsatisfiable. The separate `esm` SDK currently requires Transformers <5 and belongs in another environment.
+
+Optional dependencies (install only for the selected workflow): Pillow 12.3.0 for images; torchvision matched to Torch and timm 1.0.30 for models that require them; librosa 1.0.0 and soundfile 0.14.0 for audio preprocessing (librosa requires Python >=3.12); FFmpeg for encoded audio file inputs; pytesseract plus Tesseract for OCR document pipelines; bitsandbytes 0.50.2 for supported quantization backends. See [model loading](models.md) before choosing precision or quantization.
+
+Verification used tiny random models, synthetic input, and local save/reload only. Hub pretrained examples throughout this skill are **illustrative**: public checkpoint metadata and configurations were reviewed, but no weights or datasets were downloaded and no hosted inference or uploads were run. Optional export/distributed/hardware paths are source-checked, not end-to-end tested. See [executed checks and limits](#executed-checks-and-limits).
+
+Check your version:
+
+```python
+import transformers
+print(transformers.__version__)
+```

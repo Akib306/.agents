@@ -1,9 +1,11 @@
 ---
 name: develop-with-sub-agents
-description: Plan, delegate, and verify coding work using subagents in Codex, GitHub Copilot, T3 Code, or another runtime that supports delegation. Use for features, fixes, refactors, and tests that benefit from scoped implementation tickets and a bounded review loop.
+description: Plan, delegate, and verify coding work with scoped subagent tickets. Use only when the user explicitly invokes this skill or requests subagent work.
 ---
 
 # Develop with Sub-Agents
+
+Delegate only when the user explicitly asks for subagents or invokes `$develop-with-sub-agents`. Independent tasks and available workers alone are insufficient grounds to delegate.
 
 The **main agent** is the agent the user interacts with directly. It uses the model and reasoning effort configured for the user's conversation. It owns the plan, worker selection, integration, verification, final acceptance, and communication with the user.
 
@@ -27,7 +29,7 @@ Give workers only the information and permissions needed for the ticket. Keep se
 ## Review and repair
 
 1. Inspect the actual diff, compare it with the acceptance criteria, and run the relevant checks. Review correctness, edge cases, regressions, and risks appropriate to the change.
-2. If repairs are needed, resume the **same implementation subagent** using its saved handle or thread when the runtime supports follow-ups. Send only the actionable findings, the affected files or checks, and any new constraints. If an existing independent reviewer is needed again, reuse that reviewer where the runtime permits it. Retaining the conversation gives each worker access to its earlier context and can reuse eligible cached input.
+2. Fix localized findings inline. For larger repairs, use the runtime's supported follow-up. Resume the same worker when it supports follow-ups. Send only the actionable findings, affected files or checks, and new constraints. For T3-managed work, follow the linked T3 notes.
 3. Recheck the revised diff and rerun affected checks. Default to **one initial review and at most two delegated repair-and-recheck rounds per ticket**. Stop early when the checks pass or a concrete blocker prevents progress. Escalation to a stronger worker uses the same repair budget.
 4. If the runtime requires a fresh worker for a round, keep the approved model and effort where suitable and send a compact handoff with the current patch, prior findings and decisions, and remaining checks.
 5. After the final delegated recheck, the main agent may resolve a localized issue inline and verify the fix. Report any unresolved issue and its impact.

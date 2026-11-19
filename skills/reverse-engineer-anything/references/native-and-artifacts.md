@@ -604,3 +604,52 @@ page cannot prove absence in unknown coverage. Retained views are historical,
 not fresh filesystem checks. No decryption, Godot resource decoding, GDScript
 decompilation or target execution is provided. See
 [Godot PCK](https://github.com/morluto/rea/blob/main/docs/godot-pck.md).
+
+## Additional static artifact routes
+
+- Firmware image: `inspect_firmware_regions` when advertised. Use
+  `extract_firmware` when extraction is requested, with a caller-selected new
+  absolute output directory. These tools use caller-supplied Binwalk/Unblob on
+  Linux; see the [firmware guide](https://github.com/morluto/rea/blob/main/docs/firmware-analysis.md).
+- Explicit local EVM bytecode carrier: `inspect_evm_interface` with caller-selected
+  `raw` or `hex` encoding. The owned worker deadline is `timeout_ms` (default
+  30000 ms, range 1..2147483647, next call). It does not raise the fixed byte,
+  address-space, or CPU allowances. Preserve carrier/decoded digests and treat selectors,
+  argument strings and mutability as inferred candidates; this performs no chain
+  lookup or target execution. For the complete inferred interface without hex or
+  duplicate stdout, discover support and select `detail: "summary"`; complete
+  Evidence stays retained under its original identity. Use the returned
+  `parent_evidence_id` for exact function or `bytecode_hex`/stdout/stderr pages.
+  Candidate coverage does not establish interface completeness. See the
+  [EVM bytecode guide](https://github.com/morluto/rea/blob/main/docs/evm-bytecode.md).
+
+- Embedded CUDA/HIP code objects: `inspect_gpu_code_objects`; inventory targets
+  first, then decode selected payloads and query retained GPU Evidence.
+
+## IDA and Kuna provider notes
+
+For an existing IDA MCP configuration, use `open_binary` with the original
+input binary and `provider_id: "ida"`; do not pass an `.idb` or `.i64` database.
+The legacy attached profile binds the already-open GUI input by SHA-256 and
+leaves its database open. The modern headless profile creates and closes an
+owned private database without saving. Installation and registration reuse
+[mrexodia/ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp); see the
+[IDA provider guide](https://github.com/morluto/rea/blob/main/docs/ida-provider.md).
+Proceed directly to `analyze_function`, pseudocode, or function/string searches
+after opening; IDA does not supply `binary_overview`. Consult session availability
+when composing broader workflows. Modern direct callers and unsupported dossier
+facets remain unknown; live IDA results are not replayed from snapshots.
+
+With `REA_KUNA_COMMAND` configured, `provider_id: "kuna"` answers procedure
+lists, lookups, pseudocode, assembly and `analyze_function` from Kuna's cached
+whole-program export. Callers/callees use a separate body-free graph shared by
+the session; `xrefs` returns exact-address incoming sites and filters forwarding
+aliases. These queries and inventory lookups do not trigger a C export. Indirect
+targets remain unknown and can make relationship coverage partial. Reference
+caches expire on close; a fresh CLI process repeats the native reference walk.
+Typed references, CFG, raw-memory tools and annotations remain unsupported. A cold first
+answer can come from a single-function run (its limitations say so); assembly
+waits for the export. For pseudocode and assembly, `raw_result.source` names the
+cached `.c`/`.asm` file and byte span, which you may search directly instead of
+calling per function. See the
+[Kuna provider guide](https://github.com/morluto/rea/blob/main/docs/kuna-provider.md).

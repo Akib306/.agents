@@ -123,3 +123,38 @@ clustering analysis.
 
 - https://scikit-learn.org/stable/common_pitfalls.html
 - https://scikit-learn.org/stable/modules/clustering.html
+
+
+## Bundled Examples
+
+Run these commands from the scikit-learn skill directory; the clustering demo writes PNGs into the working directory. Its synthetic noise is seeded. The classification script assumes independent rows with enough observations per class for stratified CV; adapt both splits for grouped or temporal data.
+
+### Classification Pipeline
+
+Run a complete classification workflow with preprocessing, model comparison, hyperparameter tuning, and evaluation:
+
+```bash
+uv run --no-project --with scikit-learn==1.9.1 --with pandas --with matplotlib python scripts/classification_pipeline.py
+```
+
+This script demonstrates:
+- Handling mixed data types (numeric and categorical)
+- Model comparison using stratified cross-validation and balanced accuracy by default
+- Hyperparameter tuning with GridSearchCV
+- Comprehensive evaluation with multiple metrics
+- Impurity feature importances, with their high-cardinality bias made explicit
+
+### Clustering Analysis
+
+Perform clustering analysis with algorithm comparison and visualization:
+
+```bash
+uv run --no-project --with scikit-learn==1.9.1 --with pandas --with matplotlib python scripts/clustering_analysis.py
+```
+
+This script demonstrates:
+- Exploring candidate cluster counts (inertia/elbow and silhouette analysis)
+- Comparing multiple clustering algorithms (K-Means, DBSCAN, Agglomerative, Gaussian Mixture)
+- Reporting undefined metrics for degenerate clusterings and DBSCAN noise coverage
+- Assessing internal geometry without treating it as proof of scientific clusters
+- Visualizing results with PCA projection

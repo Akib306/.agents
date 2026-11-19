@@ -359,3 +359,43 @@ model = AutoModel.from_pretrained("model-id", device_map="cpu")
 from huggingface_hub import login
 login()
 ```
+
+
+## Authentication
+
+Public, ungated models normally do not require a login. For gated or private models,
+reuse an existing authorized token or CLI session before asking for another login.
+The CLI, Python, and CI options below are alternatives, not consecutive steps.
+
+**Recommended:** CLI login (uses `$HF_TOKEN_PATH`, defaulting to `$HF_HOME/token`, normally `~/.cache/huggingface/token`):
+
+```bash
+hf auth login
+```
+
+**Python:**
+
+```python
+from huggingface_hub import login
+login()  # Interactive prompt; do not hardcode tokens in scripts
+```
+
+**Servers / CI:** set `HF_TOKEN` in the environment (never commit tokens to git or shell profiles):
+
+```bash
+export HF_TOKEN="..."  # Read token from a secret manager, not source code
+```
+
+Get tokens at: https://huggingface.co/settings/tokens
+
+**Security:** Never paste tokens into notebooks, repos, or shared configs. Prefer `hf auth login` over exporting tokens in `.bashrc` or `.zshrc`.
+
+Use the narrowest token scope that works: `read` for private or gated model downloads, `write` only for uploads. If a long-running environment should not send the stored token on every Hub request, set `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` and pass a token only where authentication is required.
+
+## Transformers v5
+
+Transformers v5 is **PyTorch-only** (TensorFlow and JAX backends were removed). For upgrades from v4, see the [v5 migration guide](https://github.com/huggingface/transformers/blob/v5.18.0/MIGRATION_GUIDE_V5.md). Transformers 5.18.0 accepts Hub >=1.31,<3; preserve the tighter constraint of Datasets when training.
+
+**Gated or custom architectures:** accept the model license on the Hub, then load with `trust_remote_code=True` only when required custom code has been reviewed; pin its full immutable commit with `revision` (and `code_revision` for a separate code repository). Gating and custom code are independent: a gated built-in architecture does not require remote code.
+
+**Cache location:** set `HF_HOME` for all Hugging Face caches, or `HF_HUB_CACHE` just for Hub files. Use `HF_HUB_OFFLINE=1` only after required model snapshots are already cached.

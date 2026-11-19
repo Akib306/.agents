@@ -152,3 +152,58 @@ Sources: [PyProj Geod](https://pyproj4.github.io/pyproj/stable/api/geod.html),
 [Scikit-image watershed](https://scikit-image.org/docs/stable/api/skimage.segmentation.html#skimage.segmentation.watershed),
 [Mercantile](https://mercantile.readthedocs.io/en/latest/api/mercantile.html),
 [Turf interpolation](https://turfjs.org/docs/api/interpolate).
+
+
+## Local raster recipes
+
+Import the bundled [raster helper](../scripts/raster_workflows.py) from its directory
+(add that directory to `PYTHONPATH` or run from it). It implements small in-memory
+recipes; use windows/Dask for larger data. Writers require a new output path. It does not infer band identities or masks.
+
+### NDVI
+
+```python
+from raster_workflows import write_ndvi
+
+# This example assumes a VERIFIED four-band B02/B03/B04/B08 stack whose mask
+# already excludes clouds/shadows, and harmonized DN reflectance = DN * 0.0001.
+write_ndvi('s2_masked_stack.tif', 'ndvi.tif', red_band=3, nir_band=4,
+           scale=0.0001, offset=0.0)
+```
+
+Do not use those indices or calibration for an arbitrary `sentinel2.tif`.
+SAFE products and STAC assets are often separate single-band rasters. Additive
+radiometric offsets affect even NDVI. EVI/SAVI require physical reflectance.
+`normalized_difference` keeps undefined ratios and invalid cells as NaN, not zero.
+
+### Terrain
+
+```python
+import rasterio
+from raster_workflows import terrain_metrics
+
+with rasterio.open('dem_metres.tif') as src:
+    slope_deg, aspect_deg, shade = terrain_metrics(
+        src.read(1, masked=True), src.transform, src.crs)
+```
+
+The helper requires a north-up projected metric grid and elevations in metres.
+Aspect points downslope clockwise from north; it is undefined for flat cells.
+Slope is resolution-aware; nodata contaminating a derivative stencil stays invalid.
+Hillshade is an illumination visualization, not hydrological flow or exposure risk.
+
+### Classification
+
+```python
+import geopandas as gpd
+from raster_workflows import classify_imagery
+
+training = gpd.read_file('training.gpkg')  # polygons with class_id in 1..65534
+model = classify_imagery('masked_features.tif', training, 'classified.tif')
+```
+
+The helper checks CRS, geometry, labels, valid training pixels and overlapping
+labels, then preserves nodata in a uint16 output. It fits a small demonstration
+model; it does not measure accuracy. Use spatial/temporal holdouts at the field,
+scene or regional level before reporting predictive performance. See
+[machine learning](machine-learning.md).
